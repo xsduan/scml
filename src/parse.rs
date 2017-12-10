@@ -2,7 +2,7 @@ use serde_json::from_str;
 
 #[derive(Deserialize, Debug)]
 pub struct Place {
-    id: u16,
+    id: usize,
     at: String,
 }
 

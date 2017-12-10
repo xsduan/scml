@@ -4,8 +4,10 @@ extern crate serde;
 extern crate serde_json;
 
 pub mod parse;
+pub mod process;
 
 pub use parse::{parse};
+pub use process::{transform};
 
 /// Implementation
 
@@ -23,3 +25,5 @@ pub fn read(filename: &str) -> Result<Scml, Error> {
 
     Ok(parse(&contents))
 }
+
+// TODO: implement dynamic stroke description

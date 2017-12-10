@@ -1,33 +1,24 @@
-use serde_xml_rs::*;
+use serde_json::from_str;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
+pub struct Place {
+    id: u16,
+    at: String,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Stroke {
+    anchors: Vec<Place>,
+    locations: Vec<Place>,
+    #[serde(rename = "type")]
+    pub stroke_type: String,
+}
+
+#[derive(Deserialize, Debug)]
 pub struct Scml {
-    #[serde(rename = "stroke")]
     pub strokes: Vec<Stroke>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Stroke {
-    #[serde(rename = "type")]
-    pub stroke_type: String,
-    #[serde(rename = "anchor", default)]
-    pub anchors: Vec<Anchor>,
-    #[serde(rename = "location", default)]
-    pub locations: Vec<Location>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Anchor {
-    pub id: String,
-    pub at: String,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Location {
-    pub id: String,
-    pub at: String,
-}
-
-pub fn read(scml_raw: &str) -> Scml {
-    deserialize(scml_raw.as_bytes()).unwrap()
+pub fn read(scml_str: &str) -> Scml {
+    from_str(scml_str).unwrap()
 }

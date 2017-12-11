@@ -1,4 +1,10 @@
+use std::collections::HashMap;
+
 use serde_json::from_str;
+
+pub trait Parse {
+    fn parse(data: &str) -> Self;
+}
 
 #[derive(Deserialize, Debug)]
 pub struct Place {
@@ -19,6 +25,46 @@ pub struct Scml {
     pub strokes: Vec<Stroke>,
 }
 
-pub fn parse(scml_str: &str) -> Scml {
-    from_str(scml_str).expect("Scml invalid")
+impl Parse for Scml {
+    fn parse(scml_json: &str) -> Scml {
+        from_str(scml_json).expect("Scml parse error")
+    }
+}
+
+#[derive(Deserialize, Debug, Copy)]
+pub struct Point {
+    pub x: f32,
+    pub y: f32
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Anchor {
+    pub name: String,
+    pub point: Point,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Location {
+    pub name: String,
+    pub first: String,
+    pub second: String,
+    pub direction: Point,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct StrokeDescription {
+    pub anchors: Vec<Anchor>,
+    pub locations: Vec<Location>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct StrokeDictionary {
+    pub tag: String,
+    pub descriptions: HashMap<String, StrokeDescription>,
+}
+
+impl Parse for StrokeDictionary {
+    fn parse(stroke_json: &str) -> StrokeDictionary {
+        from_str(stroke_json).expect("Stroke description parse error")
+    }
 }

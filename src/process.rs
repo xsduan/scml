@@ -46,6 +46,25 @@ impl SubAssign for Point {
     }
 }
 
+impl Mul<f32> for Point {
+    type Output = Point;
+    fn mul(self, other: f32) -> Point {
+        Point {
+            x: self.x * other,
+            y: self.y * other,
+        }
+    }
+}
+
+impl MulAssign<f32> for Point {
+    fn mul_assign(&mut self, other: f32) {
+        *self = Point {
+            x: self.x * other,
+            y: self.y * other,
+        }
+    }
+}
+
 impl Div<f32> for Point {
     type Output = Point;
     fn div(self, other: f32) -> Point {
@@ -102,38 +121,41 @@ impl StrokeDescription {
         max_point
     }
 
-    /// snaps to origin
-    pub fn snap(&mut self) {
-        let min_point = self.top_left();
-
+    pub fn translate(&mut self, point: Point) {
         for i in 0..self.anchors.len() {
-            self.anchors[i].point -= min_point;
+            self.anchors[i].point -= point;
         }
 
         for i in 0..self.locations.len() {
-            self.locations[i].direction -= min_point;
+            self.locations[i].direction -= point;
         }
     }
 
-    /// fits stroke into normal box regardless of top left boundaries
-    fn scale_normal(&mut self) {
-        // find maximum dimension
-        let max_point = self.bottom_right();
-        let max_dimension = max_point.x.max(max_point.y);
-
+    pub fn scale(&mut self, size: f32) {
         for i in 0..self.anchors.len() {
-            self.anchors[i].point /= max_dimension;
+            self.anchors[i].point *= size;
         }
 
         for i in 0..self.locations.len() {
-            self.locations[i].direction /= max_dimension;
+            self.locations[i].direction *= size;
         }
+    }
+
+    /// snaps to origin
+    pub fn snap(&mut self) {
+        let scale = self.top_left();
+        self.translate(scale);
     }
 
     /// fits anchors to normal box
     pub fn fit(&mut self) {
         self.snap();
-        self.scale_normal();
+
+        // find maximum dimension
+        let max_point = self.bottom_right();
+        let max_dimension = max_point.x.max(max_point.y);
+
+        self.scale(1.0 / max_dimension);
     }
 
     fn find_anchor(&self, name: &str) -> Point {
@@ -144,15 +166,6 @@ impl StrokeDescription {
         }
         panic!("Invalid anchor name {}", name);
     }
-
-    // pub fn find_location(&self, name: &str) -> [(f32, f32); 3] {
-    //     for location in self.locations.iter() {
-    //         if location.2 == name {
-    //             return (location.0, location.1);
-    //         }
-    //     }
-    //     panic!("Invalid location name {}", name);
-    // }
 }
 
 pub fn transform(character: Scml) {

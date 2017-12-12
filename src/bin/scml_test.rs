@@ -4,14 +4,13 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::Error;
 
-use scml::parse::Parse;
+use scml::*;
 
 fn main() {
-    let scml_json = read("src/bin/examples/scml_65e5.json").unwrap();
-    let stroke_json = read("src/bin/examples/cjk_strokes.json").unwrap();
+    let scml_json = Scml::parse(&read("src/bin/examples/scml_65e5.json").unwrap());
+    let stroke_json = StrokeDictionary::parse(&read("src/bin/examples/cjk_strokes.json").unwrap());
 
-    // println!("{:#?}", scml::Scml::parse(&scml_json));
-    println!("{:#?}", scml::StrokeDictionary::parse(&stroke_json));
+    scml::transform(&scml_json, &stroke_json);
 }
 
 fn read(filename: &str) -> Result<String, Error> {

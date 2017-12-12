@@ -4,6 +4,9 @@ use std::str;
 use parse::*;
 use point::*;
 
+impl Scml {
+    pub fn stroke_count(&self) -> usize {
+        self.strokes.len()
     }
 }
 
@@ -81,6 +84,30 @@ impl StrokeDescription {
     }
 }
 
-pub fn transform(character: Scml) {
-    // TODO: implement
+impl StrokeDictionary {
+    fn get(&self, stroke_type: &str) -> Option<&StrokeDescription> {
+        self.descriptions.get(stroke_type)
+    }
+}
+
+pub fn transform(character: &Scml, strokes: &StrokeDictionary) {
+    let mut stroke_points = Vec::with_capacity(character.stroke_count());
+
+    for stroke in character.strokes.iter() {
+        // store copy of default, normalized stroke
+        let this_stroke = strokes.get(&stroke.stroke_type);
+
+        match this_stroke {
+            Some(thing) => stroke_points.push(thing.clone()),
+            None => {
+                panic!(
+                    "Invalid stroke type {} for {}",
+                    stroke.stroke_type,
+                    strokes.tag
+                )
+            }
+        }
+    }
+
+    println!("{:#?}", stroke_points);
 }

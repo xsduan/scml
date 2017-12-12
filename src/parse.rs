@@ -8,14 +8,14 @@ pub trait Parse {
 
 #[derive(Deserialize, Debug)]
 pub struct Place {
-    id: usize,
-    at: String,
+    pub id: usize,
+    pub at: String,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct Stroke {
-    anchors: Vec<Place>,
-    locations: Vec<Place>,
+    pub anchors: Vec<Place>,
+    pub locations: Vec<Place>,
     #[serde(rename = "type")]
     pub stroke_type: String,
 }
@@ -34,16 +34,16 @@ impl Parse for Scml {
 #[derive(Deserialize, Debug, Copy)]
 pub struct Point {
     pub x: f32,
-    pub y: f32
+    pub y: f32,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Anchor {
     pub name: String,
     pub point: Point,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Location {
     pub name: String,
     pub first: String,
@@ -51,7 +51,7 @@ pub struct Location {
     pub direction: Point,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct StrokeDescription {
     pub anchors: Vec<Anchor>,
     pub locations: Vec<Location>,

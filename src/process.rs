@@ -5,7 +5,9 @@ use std::str;
 use parse::*;
 
 impl Clone for Point {
-    fn clone(&self) -> Point { *self }
+    fn clone(&self) -> Point {
+        *self
+    }
 }
 
 impl Add for Point {
@@ -102,7 +104,10 @@ impl Point {
 
 impl StrokeDescription {
     fn top_left(&self) -> Point {
-        let mut min_point = Point { x: f32::INFINITY, y: f32::INFINITY };
+        let mut min_point = Point {
+            x: f32::INFINITY,
+            y: f32::INFINITY,
+        };
 
         for anchor in self.anchors.iter() {
             min_point = min_point.min(anchor.point);
@@ -112,7 +117,10 @@ impl StrokeDescription {
     }
 
     fn bottom_right(&self) -> Point {
-        let mut max_point = Point { x: -f32::INFINITY, y: -f32::INFINITY };
+        let mut max_point = Point {
+            x: -f32::INFINITY,
+            y: -f32::INFINITY,
+        };
 
         for anchor in self.anchors.iter() {
             max_point = max_point.max(anchor.point);

@@ -1,4 +1,5 @@
-#[macro_use] extern crate serde_derive;
+#[macro_use]
+extern crate serde_derive;
 
 extern crate serde;
 extern crate serde_json;
@@ -6,5 +7,5 @@ extern crate serde_json;
 pub mod parse;
 pub mod process;
 
-pub use parse::{Scml, StrokeDictionary};
-pub use process::{transform};
+pub use parse::{Scml, StrokeDictionary, Parse};
+pub use process::transform;

@@ -2,6 +2,8 @@ use std::collections::HashMap;
 
 use serde_json::from_str;
 
+use point::*;
+
 pub trait Parse {
     fn parse(data: &str) -> Self;
 }
@@ -29,12 +31,6 @@ impl Parse for Scml {
     fn parse(scml_json: &str) -> Scml {
         from_str(scml_json).expect("Scml parse error")
     }
-}
-
-#[derive(Deserialize, Debug, Copy)]
-pub struct Point {
-    pub x: f32,
-    pub y: f32,
 }
 
 #[derive(Deserialize, Debug, Clone)]

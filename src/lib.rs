@@ -6,6 +6,7 @@ extern crate serde_json;
 
 pub mod parse;
 pub mod process;
+pub mod point;
 
 pub use parse::{Scml, StrokeDictionary, Parse};
 pub use process::transform;

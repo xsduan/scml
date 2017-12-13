@@ -61,6 +61,18 @@ impl StrokeDescription {
         }
     }
 
+    pub fn scale_stretch(&mut self, scale: Point) {
+        for i in 0..self.anchors.len() {
+            self.anchors[i].point.x *= scale.x;
+            self.anchors[i].point.y *= scale.y;
+        }
+
+        for i in 0..self.locations.len() {
+            self.locations[i].direction.x *= scale.x;
+            self.locations[i].direction.y *= scale.y;
+        }
+    }
+
     /// snaps to origin
     pub fn snap(&mut self) {
         let scale = self.top_left();
@@ -100,24 +112,44 @@ pub fn transform(character: &Scml, strokes: &StrokeDictionary) {
 
     for stroke in character.strokes.iter() {
         // store copy of default, normalized stroke
-        let this_stroke = strokes.get(&stroke.stroke_type);
-
-        match this_stroke {
-            Some(thing) => stroke_points.push(thing.clone()),
+        let mut this_stroke;
+        match strokes.get(&stroke.stroke_type) {
+            Some(thing) => this_stroke = thing.clone(),
             None => {
                 panic!(
-                    "Invalid stroke type {} for {}",
+                    "Invalid stroke type {} for stroke set {}",
                     stroke.stroke_type,
                     strokes.tag
                 )
             }
         }
-    }
 
-    convert_svg(&stroke_points);
+        for anchor_place in stroke.anchors.iter() {
+            if anchor_place.id > places.len() {
+                panic!(
+                    "Place {}:{} undefined in stroke set {} for {}",
+                    anchor_place.id,
+                    anchor_place.at,
+                    strokes.tag,
+                    character.name
+                )
+            } else if anchor_place.id == places.len() {
+                places.push(this_stroke.find_anchor(&anchor_place.at));
+            } else {
+                let coord = places[anchor_place.id];
+                let anchor_coord = this_stroke.find_anchor(&anchor_place.at);
+                let difference = anchor_coord - coord;
+
+                this_stroke.translate(difference);
+            }
+        }
+
+        stroke_points.push(this_stroke);
+    }
+    convert_svg(&stroke_points, &character.name);
 }
 
-fn convert_svg(strokes: &Vec<StrokeDescription>) {
+fn convert_svg(strokes: &Vec<StrokeDescription>, name: &str) {
     let mut document = Document::new().set("viewBox", (0, 0, 1, 1));
 
     for stroke in strokes.iter() {

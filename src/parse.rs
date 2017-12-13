@@ -24,6 +24,7 @@ pub struct Stroke {
 
 #[derive(Deserialize, Debug)]
 pub struct Scml {
+    pub name: String,
     pub strokes: Vec<Stroke>,
 }
 

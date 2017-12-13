@@ -1,4 +1,5 @@
 {
+    "name":"日",
     "strokes":[
         {
             "type":"s",
@@ -29,7 +30,7 @@
                 },
                 {
                     "id":3,
-                    "at":"inside2"
+                    "at":"inside1"
                 },
                 {
                     "id":4,

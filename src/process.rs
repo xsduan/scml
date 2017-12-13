@@ -1,6 +1,10 @@
 use std::f32;
 use std::str;
 
+use svg::*;
+use svg::node::element::Path;
+use svg::node::element::path::Data;
+
 use parse::*;
 use point::*;
 
@@ -92,6 +96,7 @@ impl StrokeDictionary {
 
 pub fn transform(character: &Scml, strokes: &StrokeDictionary) {
     let mut stroke_points = Vec::with_capacity(character.stroke_count());
+    let mut places = Vec::new();
 
     for stroke in character.strokes.iter() {
         // store copy of default, normalized stroke
@@ -109,5 +114,27 @@ pub fn transform(character: &Scml, strokes: &StrokeDictionary) {
         }
     }
 
-    println!("{:#?}", stroke_points);
+    convert_svg(&stroke_points);
+}
+
+fn convert_svg(strokes: &Vec<StrokeDescription>) {
+    let mut document = Document::new().set("viewBox", (0, 0, 1, 1));
+
+    for stroke in strokes.iter() {
+        let mut path_data = Data::new().move_to(stroke.anchors[0].point);
+
+        for anchor in &stroke.anchors[1..] {
+            path_data = path_data.line_to(anchor.point);
+        }
+
+        let path = Path::new()
+            .set("fill", "none")
+            .set("stroke", "black")
+            .set("stroke-width", 0.01)
+            .set("d", path_data);
+
+        document = document.add(path);
+    }
+
+    save("image.svg", &document).unwrap();
 }

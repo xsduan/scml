@@ -2,6 +2,8 @@ use std::f32;
 use std::ops::*;
 use std::str;
 
+use svg::node::element::path::Parameters;
+
 #[derive(Deserialize, Debug, Copy)]
 pub struct Point {
     pub x: f32,
@@ -87,6 +89,12 @@ impl DivAssign<f32> for Point {
             x: self.x / other,
             y: self.y / other,
         }
+    }
+}
+
+impl From<Point> for Parameters {
+    fn from(here: Point) -> Parameters {
+        Parameters::from((here.x, here.y))
     }
 }
 

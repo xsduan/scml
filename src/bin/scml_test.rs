@@ -1,24 +1,42 @@
+extern crate glob;
+
 extern crate scml;
 
 use std::fs::File;
+use std::path::Path;
 use std::io::prelude::*;
 use std::io::Result;
+
+use glob::*;
 
 use scml::*;
 
 fn main() {
     let examples_dir = "src/bin/examples/";
-    let scml = Scml::parse(&read(&format!("{}scml_5b50.json", examples_dir)).unwrap());
-    let stroke =
-        StrokeDictionary::parse(&read(&format!("{}cjk_strokes.json", examples_dir)).unwrap());
+    let scml_dir = format!("{}scml/", examples_dir);
+    let output_dir = format!("{}svg/", examples_dir);
 
-    write(
-        &format!("{}/{}.svg", examples_dir, scml.name),
-        &scml.transform(&stroke).unwrap(),
-    ).expect("Could not save file");
+    let stroke = StrokeDictionary::parse(&read(
+        Path::new(&format!("{}cjk_strokes.json", examples_dir)),
+    ).unwrap());
+
+    for entry in glob(&format!("{}*.json", scml_dir)).expect("Glob didn't work :(") {
+        let scml = match entry {
+            Ok(path) => Scml::parse(&read(path.as_path()).expect("Read error")),
+            Err(e) => {
+                println!("{:?}", e);
+                continue;
+            }
+        };
+
+        write(
+            &format!("{}{}.svg", output_dir, scml.name),
+            &scml.transform(&stroke).unwrap(),
+        ).expect("Could not save file");
+    }
 }
 
-fn read(filename: &str) -> Result<String> {
+fn read(filename: &Path) -> Result<String> {
     let mut file = File::open(filename)?;
     let mut contents = String::new();
 

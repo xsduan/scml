@@ -8,7 +8,7 @@ use scml::*;
 
 fn main() {
     let examples_dir = "src/bin/examples/";
-    let scml = Scml::parse(&read(&format!("{}scml_65e5.json", examples_dir)).unwrap());
+    let scml = Scml::parse(&read(&format!("{}scml_5b50.json", examples_dir)).unwrap());
     let stroke =
         StrokeDictionary::parse(&read(&format!("{}cjk_strokes.json", examples_dir)).unwrap());
 

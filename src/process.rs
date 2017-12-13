@@ -55,10 +55,52 @@ impl Scml {
             stroke_points.push(this_stroke);
         }
 
-        Scml::convert_svg(&stroke_points, &self.name)
+        Scml::normalize(&mut stroke_points);
+        Scml::convert_svg(&stroke_points)
     }
 
-    fn convert_svg(strokes: &Vec<StrokeDescription>, name: &str) -> Result<String> {
+    fn top_left(strokes: &Vec<StrokeDescription>) -> Point {
+        let mut min_point = Point {
+            x: f32::INFINITY,
+            y: f32::INFINITY,
+        };
+
+        for stroke in strokes.iter() {
+            min_point = min_point.min(stroke.top_left());
+        }
+
+        min_point
+    }
+
+    fn bottom_right(strokes: &Vec<StrokeDescription>) -> Point {
+        let mut max_point = Point {
+            x: -f32::INFINITY,
+            y: -f32::INFINITY,
+        };
+
+        for stroke in strokes.iter() {
+            max_point = max_point.max(stroke.bottom_right());
+        }
+
+        max_point
+    }
+
+    fn normalize(strokes: &mut Vec<StrokeDescription>) {
+        let min_point = Scml::top_left(strokes);
+        
+        for i in 0..strokes.len() {
+            strokes[i].translate(min_point);
+        }
+
+        let max_point = Scml::bottom_right(strokes);
+        let max_dimension = max_point.x.max(max_point.y);
+
+        for i in 0..strokes.len() {
+            strokes[i].scale(1.0 / max_dimension)
+        }
+    }
+
+    fn convert_svg(strokes: &Vec<StrokeDescription>) -> Result<String> {
         let mut document = Document::new().set("viewBox", (0, 0, 1, 1));
 
         for stroke in strokes.iter() {

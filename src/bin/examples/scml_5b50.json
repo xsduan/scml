@@ -1,0 +1,35 @@
+{
+    "name": "子",
+    "strokes": [
+        {
+            "type": "hg",
+            "anchors": [
+                {
+                    "id": 0,
+                    "at": "end"
+                }
+            ],
+            "locations": []
+        },
+        {
+            "type": "sg",
+            "anchors": [
+                {
+                    "id": 0,
+                    "at": "begin"
+                }
+            ],
+            "locations": []
+        },
+        {
+            "type": "h",
+            "anchors": [
+                {
+                    "id": 0,
+                    "at": "inside"
+                }
+            ],
+            "locations": []
+        }
+    ]
+}

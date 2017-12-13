@@ -92,7 +92,6 @@
             ]
         },
         "hz": {
-            "name": "hz",
             "anchors": [
                 {
                     "name": "begin",
@@ -155,6 +154,117 @@
                     "second": "end",
                     "direction": {
                         "x": 1.5,
+                        "y": 0.5
+                    }
+                }
+            ]
+        },
+        "hg": {
+            "anchors": [
+                {
+                    "name": "begin",
+                    "point": {
+                        "x": 0,
+                        "y": 0
+                    }
+                },
+                {
+                    "name": "inside0",
+                    "point": {
+                        "x": 0.5,
+                        "y": 0
+                    }
+                },
+                {
+                    "name": "corner",
+                    "point": {
+                        "x": 1,
+                        "y": 0
+                    }
+                },
+                {
+                    "name": "inside1",
+                    "point": {
+                        "x": 0.75,
+                        "y": 0.25
+                    }
+                },
+                {
+                    "name": "end",
+                    "point": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                }
+            ],
+            "locations": [
+                {
+                    "name": "above",
+                    "first": "begin",
+                    "second": "corner",
+                    "direction": {
+                        "x": 0.5,
+                        "y": -1
+                    }
+                },
+                {
+                    "name": "right",
+                    "first": "corner",
+                    "second": "end",
+                    "direction": {
+                        "x": 1.5,
+                        "y": 0.5
+                    }
+                }
+            ]
+        },
+        "sg": {
+            "anchors": [
+                {
+                    "name": "begin",
+                    "point": {
+                        "x": 0,
+                        "y": 0
+                    }
+                },
+                {
+                    "name": "inside",
+                    "point": {
+                        "x": 0,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "name": "end",
+                    "point": {
+                        "x": 0,
+                        "y": 1
+                    }
+                },
+                {
+                    "name": "hook",
+                    "point": {
+                        "x": -0.05,
+                        "y": 0.95
+                    }
+                }
+            ],
+            "locations": [
+                {
+                    "name": "left",
+                    "first": "begin",
+                    "second": "end",
+                    "direction": {
+                        "x": -1,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "name": "right",
+                    "first": "begin",
+                    "second": "end",
+                    "direction": {
+                        "x": 1,
                         "y": 0.5
                     }
                 }

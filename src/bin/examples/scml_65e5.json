@@ -1,77 +1,69 @@
 {
-    "name":"日",
-    "strokes":[
+    "name": "日",
+    "strokes": [
         {
-            "type":"s",
-            "anchors":[
+            "type": "s",
+            "anchors": [
                 {
-                    "id":0,
-                    "at":"begin"
+                    "id": 0,
+                    "at": "begin"
                 },
                 {
-                    "id":1,
-                    "at":"inside"
+                    "id": 1,
+                    "at": "inside"
                 },
                 {
-                    "id":2,
-                    "at":"end"
+                    "id": 2,
+                    "at": "end"
                 }
             ],
-            "locations":[
-
-            ]
+            "locations": []
         },
         {
-            "type":"hz",
-            "anchors":[
+            "type": "hz",
+            "anchors": [
                 {
-                    "id":0,
-                    "at":"begin"
+                    "id": 0,
+                    "at": "begin"
                 },
                 {
-                    "id":3,
-                    "at":"inside1"
+                    "id": 3,
+                    "at": "inside1"
                 },
                 {
-                    "id":4,
-                    "at":"end"
+                    "id": 4,
+                    "at": "end"
                 }
             ],
-            "locations":[
-
-            ]
+            "locations": []
         },
         {
-            "type":"h",
-            "anchors":[
+            "type": "h",
+            "anchors": [
                 {
-                    "id":1,
-                    "at":"begin"
+                    "id": 1,
+                    "at": "begin"
                 },
                 {
-                    "id":3,
-                    "at":"end"
+                    "id": 3,
+                    "at": "end"
                 }
             ],
-            "locations":[
-
-            ]
+            "locations": []
         },
         {
-            "type":"h",
-            "anchors":[
+            "type": "h",
+            "anchors": [
                 {
-                    "id":2,
-                    "at":"begin"
+                    "id": 2,
+                    "at": "begin"
                 },
                 {
-                    "id":4,
-                    "at":"end"
+                    "id": 4,
+                    "at": "end"
                 }
             ],
-            "locations":[
-
-            ]
+            "locations": []
         }
     ]
 }

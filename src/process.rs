@@ -1,5 +1,6 @@
 use std::f32;
 use std::str;
+use std::io::Result;
 
 use svg::*;
 use svg::node::element::Path;
@@ -12,7 +13,74 @@ impl Scml {
     pub fn stroke_count(&self) -> usize {
         self.strokes.len()
     }
+
+    pub fn transform(&self, strokes: &StrokeDictionary) -> Result<String> {
+        let mut stroke_points = Vec::with_capacity(self.stroke_count());
+        let mut places = Vec::new();
+
+        for stroke in self.strokes.iter() {
+            // store copy of default, normalized stroke
+            let mut this_stroke;
+            match strokes.get(&stroke.stroke_type) {
+                Some(thing) => this_stroke = thing.clone(),
+                None => {
+                    panic!(
+                        "Invalid stroke type {} for stroke set {}",
+                        stroke.stroke_type,
+                        strokes.tag
+                    )
+                }
+            }
+
+            for anchor_place in stroke.anchors.iter() {
+                if anchor_place.id > places.len() {
+                    panic!(
+                        "Place {}:{} undefined in stroke set {} for {}",
+                        anchor_place.id,
+                        anchor_place.at,
+                        strokes.tag,
+                        self.name
+                    )
+                } else if anchor_place.id == places.len() {
+                    places.push(this_stroke.find_anchor(&anchor_place.at));
+                } else {
+                    let coord = places[anchor_place.id];
+                    let anchor_coord = this_stroke.find_anchor(&anchor_place.at);
+                    let difference = anchor_coord - coord;
+
+                    this_stroke.translate(difference);
+                }
+            }
+
+            stroke_points.push(this_stroke);
+        }
+
+        Scml::convert_svg(&stroke_points, &self.name)
+    }
+
+    fn convert_svg(strokes: &Vec<StrokeDescription>, name: &str) -> Result<String> {
+        let mut document = Document::new().set("viewBox", (0, 0, 1, 1));
+
+        for stroke in strokes.iter() {
+            let mut path_data = Data::new().move_to(stroke.anchors[0].point);
+
+            for anchor in &stroke.anchors[1..] {
+                path_data = path_data.line_to(anchor.point);
+            }
+
+            let path = Path::new()
+                .set("fill", "none")
+                .set("stroke", "black")
+                .set("stroke-width", 0.01)
+                .set("d", path_data);
+
+            document = document.add(path);
+        }
+
+        Ok(document.to_string())
+    }
 }
+
 
 impl StrokeDescription {
     fn top_left(&self) -> Point {
@@ -104,69 +172,4 @@ impl StrokeDictionary {
     fn get(&self, stroke_type: &str) -> Option<&StrokeDescription> {
         self.descriptions.get(stroke_type)
     }
-}
-
-pub fn transform(character: &Scml, strokes: &StrokeDictionary) {
-    let mut stroke_points = Vec::with_capacity(character.stroke_count());
-    let mut places = Vec::new();
-
-    for stroke in character.strokes.iter() {
-        // store copy of default, normalized stroke
-        let mut this_stroke;
-        match strokes.get(&stroke.stroke_type) {
-            Some(thing) => this_stroke = thing.clone(),
-            None => {
-                panic!(
-                    "Invalid stroke type {} for stroke set {}",
-                    stroke.stroke_type,
-                    strokes.tag
-                )
-            }
-        }
-
-        for anchor_place in stroke.anchors.iter() {
-            if anchor_place.id > places.len() {
-                panic!(
-                    "Place {}:{} undefined in stroke set {} for {}",
-                    anchor_place.id,
-                    anchor_place.at,
-                    strokes.tag,
-                    character.name
-                )
-            } else if anchor_place.id == places.len() {
-                places.push(this_stroke.find_anchor(&anchor_place.at));
-            } else {
-                let coord = places[anchor_place.id];
-                let anchor_coord = this_stroke.find_anchor(&anchor_place.at);
-                let difference = anchor_coord - coord;
-
-                this_stroke.translate(difference);
-            }
-        }
-
-        stroke_points.push(this_stroke);
-    }
-    convert_svg(&stroke_points, &character.name);
-}
-
-fn convert_svg(strokes: &Vec<StrokeDescription>, name: &str) {
-    let mut document = Document::new().set("viewBox", (0, 0, 1, 1));
-
-    for stroke in strokes.iter() {
-        let mut path_data = Data::new().move_to(stroke.anchors[0].point);
-
-        for anchor in &stroke.anchors[1..] {
-            path_data = path_data.line_to(anchor.point);
-        }
-
-        let path = Path::new()
-            .set("fill", "none")
-            .set("stroke", "black")
-            .set("stroke-width", 0.01)
-            .set("d", path_data);
-
-        document = document.add(path);
-    }
-
-    save("image.svg", &document).unwrap();
 }

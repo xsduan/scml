@@ -1,161 +1,161 @@
 {
-    "tag":"cjk",
-    "descriptions":{
-        "h":{
-            "anchors":[
+    "tag": "cjk",
+    "descriptions": {
+        "h": {
+            "anchors": [
                 {
-                    "name":"begin",
-                    "point":{
-                        "x":0,
-                        "y":0
+                    "name": "begin",
+                    "point": {
+                        "x": 0,
+                        "y": 0
                     }
                 },
                 {
-                    "name":"inside",
-                    "point":{
-                        "x":0.5,
-                        "y":0
+                    "name": "inside",
+                    "point": {
+                        "x": 0.5,
+                        "y": 0
                     }
                 },
                 {
-                    "name":"end",
-                    "point":{
-                        "x":1,
-                        "y":0
+                    "name": "end",
+                    "point": {
+                        "x": 1,
+                        "y": 0
                     }
                 }
             ],
-            "locations":[
+            "locations": [
                 {
-                    "name":"above",
-                    "first":"begin",
-                    "second":"end",
-                    "direction":{
-                        "x":0.5,
-                        "y":-1
+                    "name": "above",
+                    "first": "begin",
+                    "second": "end",
+                    "direction": {
+                        "x": 0.5,
+                        "y": -1
                     }
                 },
                 {
-                    "name":"below",
-                    "first":"begin",
-                    "second":"end",
-                    "direction":{
-                        "x":0.5,
-                        "y":1
+                    "name": "below",
+                    "first": "begin",
+                    "second": "end",
+                    "direction": {
+                        "x": 0.5,
+                        "y": 1
                     }
                 }
             ]
         },
-        "s":{
-            "anchors":[
+        "s": {
+            "anchors": [
                 {
-                    "name":"begin",
-                    "point":{
-                        "x":0,
-                        "y":0
+                    "name": "begin",
+                    "point": {
+                        "x": 0,
+                        "y": 0
                     }
                 },
                 {
-                    "name":"inside",
-                    "point":{
-                        "x":0,
-                        "y":0.5
+                    "name": "inside",
+                    "point": {
+                        "x": 0,
+                        "y": 0.5
                     }
                 },
                 {
-                    "name":"end",
-                    "point":{
-                        "x":0,
-                        "y":1
+                    "name": "end",
+                    "point": {
+                        "x": 0,
+                        "y": 1
                     }
                 }
             ],
-            "locations":[
+            "locations": [
                 {
-                    "name":"left",
-                    "first":"begin",
-                    "second":"end",
-                    "direction":{
-                        "x":-1,
-                        "y":0.5
+                    "name": "left",
+                    "first": "begin",
+                    "second": "end",
+                    "direction": {
+                        "x": -1,
+                        "y": 0.5
                     }
                 },
                 {
-                    "name":"right",
-                    "first":"begin",
-                    "second":"end",
-                    "direction":{
-                        "x":1,
-                        "y":0.5
+                    "name": "right",
+                    "first": "begin",
+                    "second": "end",
+                    "direction": {
+                        "x": 1,
+                        "y": 0.5
                     }
                 }
             ]
         },
-        "hz":{
-            "name":"hz",
-            "anchors":[
+        "hz": {
+            "name": "hz",
+            "anchors": [
                 {
-                    "name":"begin",
-                    "point":{
-                        "x":0,
-                        "y":0
+                    "name": "begin",
+                    "point": {
+                        "x": 0,
+                        "y": 0
                     }
                 },
                 {
-                    "name":"inside0",
-                    "point":{
-                        "x":0.5,
-                        "y":0
+                    "name": "inside0",
+                    "point": {
+                        "x": 0.5,
+                        "y": 0
                     }
                 },
                 {
-                    "name":"corner",
-                    "point":{
-                        "x":1,
-                        "y":0
+                    "name": "corner",
+                    "point": {
+                        "x": 1,
+                        "y": 0
                     }
                 },
                 {
-                    "name":"inside1",
-                    "point":{
-                        "x":1,
-                        "y":0.5
+                    "name": "inside1",
+                    "point": {
+                        "x": 1,
+                        "y": 0.5
                     }
                 },
                 {
-                    "name":"end",
-                    "point":{
-                        "x":1,
-                        "y":1
+                    "name": "end",
+                    "point": {
+                        "x": 1,
+                        "y": 1
                     }
                 }
             ],
-            "locations":[
+            "locations": [
                 {
-                    "name":"above",
-                    "first":"begin",
-                    "second":"corner",
-                    "direction":{
-                        "x":0.5,
-                        "y":-1
+                    "name": "above",
+                    "first": "begin",
+                    "second": "corner",
+                    "direction": {
+                        "x": 0.5,
+                        "y": -1
                     }
                 },
                 {
-                    "name":"inside",
-                    "first":"corner",
-                    "second":"end",
-                    "direction":{
-                        "x":0.5,
-                        "y":0.5
+                    "name": "inside",
+                    "first": "corner",
+                    "second": "end",
+                    "direction": {
+                        "x": 0.5,
+                        "y": 0.5
                     }
                 },
                 {
-                    "name":"right",
-                    "first":"corner",
-                    "second":"end",
-                    "direction":{
-                        "x":1.5,
-                        "y":0.5
+                    "name": "right",
+                    "first": "corner",
+                    "second": "end",
+                    "direction": {
+                        "x": 1.5,
+                        "y": 0.5
                     }
                 }
             ]

@@ -11,4 +11,3 @@ pub mod process;
 pub mod point;
 
 pub use parse::{Scml, StrokeDictionary, Parse};
-pub use process::transform;

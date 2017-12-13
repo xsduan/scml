@@ -7,7 +7,8 @@ extern crate serde_json;
 extern crate svg;
 
 pub mod parse;
-pub mod process;
+pub mod stroke;
+pub mod scml;
 pub mod point;
 
 pub use parse::{Scml, StrokeDictionary, Parse};

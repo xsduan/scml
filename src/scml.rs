@@ -14,6 +14,7 @@ impl Scml {
         self.strokes.len()
     }
 
+    /// turns abstract structure into points
     pub fn transform(&self, strokes: &StrokeDictionary) -> Result<String> {
         let mut stroke_points = Vec::with_capacity(self.stroke_count());
         let mut places = Vec::new();
@@ -59,6 +60,7 @@ impl Scml {
         Scml::convert_svg(&stroke_points)
     }
 
+    /// find upper left bounds of entire character
     fn top_left(strokes: &Vec<StrokeDescription>) -> Point {
         let mut min_point = Point {
             x: f32::INFINITY,
@@ -72,6 +74,7 @@ impl Scml {
         min_point
     }
 
+    /// find lower right bounds of entire character
     fn bottom_right(strokes: &Vec<StrokeDescription>) -> Point {
         let mut max_point = Point {
             x: -f32::INFINITY,
@@ -85,6 +88,7 @@ impl Scml {
         max_point
     }
 
+    /// normalize character to fit within 1x1 square
     fn normalize(strokes: &mut Vec<StrokeDescription>) {
         let min_point = Scml::top_left(strokes);
         
@@ -100,6 +104,7 @@ impl Scml {
         }
     }
 
+    /// convert character into svg format
     fn convert_svg(strokes: &Vec<StrokeDescription>) -> Result<String> {
         let mut document = Document::new().set("viewBox", (0, 0, 1, 1));
 
@@ -120,98 +125,5 @@ impl Scml {
         }
 
         Ok(document.to_string())
-    }
-}
-
-
-impl StrokeDescription {
-    fn top_left(&self) -> Point {
-        let mut min_point = Point {
-            x: f32::INFINITY,
-            y: f32::INFINITY,
-        };
-
-        for anchor in self.anchors.iter() {
-            min_point = min_point.min(anchor.point);
-        }
-
-        min_point
-    }
-
-    fn bottom_right(&self) -> Point {
-        let mut max_point = Point {
-            x: -f32::INFINITY,
-            y: -f32::INFINITY,
-        };
-
-        for anchor in self.anchors.iter() {
-            max_point = max_point.max(anchor.point);
-        }
-
-        max_point
-    }
-
-    pub fn translate(&mut self, point: Point) {
-        for i in 0..self.anchors.len() {
-            self.anchors[i].point -= point;
-        }
-
-        for i in 0..self.locations.len() {
-            self.locations[i].direction -= point;
-        }
-    }
-
-    pub fn scale(&mut self, size: f32) {
-        for i in 0..self.anchors.len() {
-            self.anchors[i].point *= size;
-        }
-
-        for i in 0..self.locations.len() {
-            self.locations[i].direction *= size;
-        }
-    }
-
-    pub fn scale_stretch(&mut self, scale: Point) {
-        for i in 0..self.anchors.len() {
-            self.anchors[i].point.x *= scale.x;
-            self.anchors[i].point.y *= scale.y;
-        }
-
-        for i in 0..self.locations.len() {
-            self.locations[i].direction.x *= scale.x;
-            self.locations[i].direction.y *= scale.y;
-        }
-    }
-
-    /// snaps to origin
-    pub fn snap(&mut self) {
-        let scale = self.top_left();
-        self.translate(scale);
-    }
-
-    /// fits anchors to normal box
-    pub fn fit(&mut self) {
-        self.snap();
-
-        // find maximum dimension
-        let max_point = self.bottom_right();
-        let max_dimension = max_point.x.max(max_point.y);
-
-        self.scale(1.0 / max_dimension);
-    }
-
-    fn find_anchor(&self, name: &str) -> Point {
-        for anchor in self.anchors.iter() {
-            if anchor.name == name {
-                return anchor.point.clone();
-            }
-        }
-        panic!("Invalid anchor name {}", name);
-    }
-}
-
-impl StrokeDictionary {
-    fn get(&self, stroke_type: &str) -> Option<&StrokeDescription> {
-        self.descriptions.get(stroke_type)
     }
 }
